@@ -8,3 +8,4 @@ pipenv shell
 
 
 python server.py
+python server.py -> python3, py o python

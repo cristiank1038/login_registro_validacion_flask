@@ -3,8 +3,12 @@ from flask_app.config.mysqlconnection import connectToMySQL
 import re #Importamos expresiones regulares
 #crear una expresión regular para verificar que tengamos el email con formato correcto
 EMAIL_REGEX = re.compile(r'^[a-zA-Z0-9.+_-]+@[a-zA-Z0-9._-]+\.[a-zA-Z]+$')
+PWD_REGEX = re.compile(r'^(?=\w*\d)(?=\w*[A-Z])(?=\w*[a-z])\S{8,16}$')
+# La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula.
+# Detodounpoc0 (contraseña valida)
 
-from flask import flash #mandar mensajes a la plantilla
+from flask import flash 
+#mandar mensajes a la plantilla
 
 class User:
 
@@ -48,8 +52,11 @@ class User:
             flash('Email invalido', 'registro')
             es_valido = False
 
-        if len(formulario['password']) < 6:
-            flash('Contraseña debe tener al menos 6 caracteres', 'registro')
+        # if len(formulario['password']) < 6:
+        #     flash('Contraseña debe tener al menos 6 caracteres', 'registro')
+        #     es_valido = False
+        if not PWD_REGEX.match(formulario['password']):
+            flash('La contraseña debe tener al entre 8 y 16 caracteres, al menos un dígito, al menos una minúscula y al menos una mayúscula.', 'registro')
             es_valido = False
         
         if formulario['password'] != formulario['confirm_password']:
